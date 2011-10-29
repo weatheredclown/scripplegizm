@@ -13,7 +13,6 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import com.scripplegizm.qbutils.Draw;
-import com.scripplegizm.qbutils.Draw.Point2D;
 
 public class HelloWorldActivity extends Activity {
 	/** Called when the activity is first created. */
@@ -28,11 +27,6 @@ public class HelloWorldActivity extends Activity {
 		private StringBuilder statusMsg = new StringBuilder();
 		private Formatter formatter = new Formatter(statusMsg);
 		int mr = 0;
-
-		static final Point2D lknee = new Point2D(10, 120);
-		static final Point2D lfoot = new Point2D(25, 150);
-		static final Point2D rknee = new Point2D(70, 120);
-		static final Point2D rfoot = new Point2D(55, 150);
 
 		// static final Point2D p = new Point2D(1, 140);
 
