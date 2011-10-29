@@ -5,8 +5,6 @@ import java.util.ArrayList;
 import android.graphics.Canvas;
 import android.graphics.Color;
 
-import com.scripplegizm.qbutils.Draw.Point2D;
-
 /**
  * Display a value over time.
  * @author tlaubach

@@ -4,8 +4,6 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 
-import com.scripplegizm.qbutils.Draw.Point2D;
-
 public class AnimatedSprite {
 	public enum AnimMode {
 		ONCE, LOOPED, PINGPONG, SEQUENCE, PINGPONG_SEQUENCE
