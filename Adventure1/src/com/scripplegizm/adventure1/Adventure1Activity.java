@@ -20,7 +20,7 @@ import com.scripplegizm.gameutils.Clickables.BitmapButton;
 import com.scripplegizm.gameutils.GameActivity;
 import com.scripplegizm.gameutils.GameView;
 import com.scripplegizm.gameutils.Histogram;
-import com.scripplegizm.qbutils.Draw.Point2D;
+import com.scripplegizm.gameutils.Point2D;
 
 public class Adventure1Activity extends GameActivity {
 	@Override
