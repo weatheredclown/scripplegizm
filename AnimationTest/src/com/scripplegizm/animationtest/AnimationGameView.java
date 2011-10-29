@@ -22,23 +22,6 @@ import com.scripplegizm.qbutils.Draw.Point2D;
 
 public class AnimationGameView extends GameView {
 	enum RoomType {
-		/*
-		TYPE_A(0, new Rect(100, 150, 280, 160), new Rect(10, 480, 200, 490),
-				new Rect(150, 300, 400, 310), new Rect(200, 200, 300, 210),
-				new Rect(225, 25, 270, 35), new Rect(10, 300, 20, 480)), TYPE_B(
-				1, new Rect(200, 200, 400, 210), new Rect(10, 400, 400, 410),
-				new Rect(125, 25, 250, 35), new Rect(25, 550, 150, 560)), TYPE_C(
-				2, new Rect(200, 200, 400, 210), new Rect(250, 200, 400, 210),
-				new Rect(225, 25, 450, 35), new Rect(100, 550,  , 560)), TYPE_D(
-				3, new Rect(200, 300, 400, 310), new Rect(350, 200, 400, 210),
-				new Rect(125, 55, 150, 65), new Rect(200, 550, 400, 560)), TYPE_E(
-				4, new Rect(300, 120, 350, 130), new Rect(110, 300, 300, 310),
-				new Rect(125, 630, 400, 640), new Rect(50, 440, 100, 450)), TYPE_F(
-				5, new Rect(200, 200, 400, 210), new Rect(100, 400, 400, 410),
-				new Rect(10, 600, 300, 610)), TYPE_G(6, new Rect(200, 200, 400,
-				210), new Rect(200, 400, 400, 410),
-				new Rect(230, 550, 400, 560), new Rect(10, 600, 50, 610));
-		*/
 		TYPE_A(0, new Rect(0, 300, 150, 310), new Rect(250, 300, 1280, 310) // floor with hole
 				, new Rect(50, 50, 60, 300) // left wall
 				, new Rect(400, 50, 410, 200) // right wall with door
