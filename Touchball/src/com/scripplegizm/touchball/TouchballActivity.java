@@ -9,7 +9,7 @@ import android.os.Bundle;
 import android.view.MotionEvent;
 
 import com.scripplegizm.gameutils.GameView;
-import com.scripplegizm.qbutils.Draw;
+import com.scripplegizm.gameutils.Point2D;
 
 public class TouchballActivity extends Activity {
 	/** Called when the activity is first created. */
@@ -18,10 +18,10 @@ public class TouchballActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		GameView gm = new GameView(this) {
 
-			HashMap<Integer, Draw.Point2D> balls = new HashMap<Integer, Draw.Point2D>();
+			HashMap<Integer, Point2D> balls = new HashMap<Integer, Point2D>();
 
-			Draw.Point2D flyBall = new Draw.Point2D(0, 0);
-			Draw.Point2D flyVelocity = new Draw.Point2D(0, 0);
+			Point2D flyBall = new Point2D(0, 0);
+			Point2D flyVelocity = new Point2D(0, 0);
 
 			static final int MAX_VELOCITY = 20;
 
@@ -35,7 +35,7 @@ public class TouchballActivity extends Activity {
 					int i = (action & MotionEvent.ACTION_POINTER_INDEX_MASK) >> MotionEvent.ACTION_POINTER_INDEX_SHIFT;
 					Integer pointerId = event.getPointerId(i);
 					if (!balls.containsKey(pointerId)) {
-						balls.put(pointerId, new Draw.Point2D(event.getX(i),
+						balls.put(pointerId, new Point2D(event.getX(i),
 								event.getY(i)));
 					}
 					break;
@@ -53,7 +53,7 @@ public class TouchballActivity extends Activity {
 					for (int i = 0; i < event.getPointerCount(); i++) {
 						Integer pointerId = event.getPointerId(i);
 						if (balls.containsKey(pointerId)) {
-							Draw.Point2D pt = balls.get(pointerId);
+							Point2D pt = balls.get(pointerId);
 							pt.setX((int) event.getX(i));
 							pt.setY((int) event.getY(i));
 						}
@@ -72,10 +72,10 @@ public class TouchballActivity extends Activity {
 				canvas.drawRect(0, 0, xMax + 1, yMax + 1, draw.getPaint());
 				int lastX = -1, lastY = -1;
 				int lastColor = nextColor;
-				Draw.Point2D closest = null;
+				Point2D closest = null;
 				float dist2 = 100000000.0f;
-				for (Draw.Point2D p : balls.values()) {
-					this.draw.CIRCLE(canvas, p.getX(), p.getY(), 20,
+				for (Point2D p : balls.values()) {
+					draw.CIRCLE(canvas, p.getX(), p.getY(), 20,
 							(nextColor++) * -100, true);
 
 					if (lastX != -1) {
@@ -90,7 +90,7 @@ public class TouchballActivity extends Activity {
 					}
 				}
 				if (lastX != -1) {
-					for (Draw.Point2D p : balls.values()) {
+					for (Point2D p : balls.values()) {
 						draw.LINE(canvas, p.getX(), p.getY(), lastX, lastY, 14);
 						break;
 					}
