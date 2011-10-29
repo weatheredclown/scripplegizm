@@ -15,8 +15,7 @@ import android.view.KeyEvent;
 import com.scripplegizm.gameutils.Clickables.BitmapButton;
 import com.scripplegizm.gameutils.Clickables.Dialog;
 import com.scripplegizm.gameutils.GameView;
-import com.scripplegizm.qbutils.Draw;
-import com.scripplegizm.qbutils.Draw.Point2D;
+import com.scripplegizm.gameutils.Point2D;
 
 public class SpriteGameView extends GameView {
 
@@ -26,9 +25,9 @@ public class SpriteGameView extends GameView {
 	final static int JUMP_SPEED = 300;
 
 	class Guy {
-		Draw.Point2D pos = new Draw.Point2D(0, 0);
-		Draw.Point2D jumpOffset = new Draw.Point2D(0, 0);
-		Draw.Point2D jumpVelocity = new Draw.Point2D(0, 0);
+		Point2D pos = new Point2D(0, 0);
+		Point2D jumpOffset = new Point2D(0, 0);
+		Point2D jumpVelocity = new Point2D(0, 0);
 		boolean jump = false;
 		private Bitmap sprite = null;
 		private Bitmap shadow = null;
@@ -225,7 +224,7 @@ public class SpriteGameView extends GameView {
 	}
 
 	class JumpBox {
-		Draw.Point2D boxPos = new Draw.Point2D(0, 400);
+		Point2D boxPos = new Point2D(0, 400);
 		int boxColor = Color.BLUE;
 		boolean gotTouch = false;
 		boolean neededTouch = false;
@@ -551,8 +550,8 @@ public class SpriteGameView extends GameView {
 			enemy.pos.setX(rand.nextInt(200) + xMax);
 			enemyXFloat = (float) enemy.pos.getX();
 		}
-		Point2D epos = Draw.Point2D.add(enemy.pos, enemy.jumpOffset);
-		Point2D ppos = Draw.Point2D.add(player.pos, player.jumpOffset);
+		Point2D epos = Point2D.add(enemy.pos, enemy.jumpOffset);
+		Point2D ppos = Point2D.add(player.pos, player.jumpOffset);
 
 		if (epos.dist2(ppos) < 1024) {
 			if (gameLives.subtract(1) != 0) {
