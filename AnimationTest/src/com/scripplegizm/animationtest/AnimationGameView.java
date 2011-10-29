@@ -23,7 +23,7 @@ import com.scripplegizm.gameutils.AnimatedSprite.NextAnim;
 import com.scripplegizm.gameutils.ClickableRect;
 import com.scripplegizm.gameutils.GameView;
 import com.scripplegizm.gameutils.Histogram;
-import com.scripplegizm.qbutils.Draw.Point2D;
+import com.scripplegizm.gameutils.Point2D;
 
 public class AnimationGameView extends GameView {
 	enum RoomType {
