@@ -17,7 +17,12 @@ import android.util.Pair;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 
+import com.scripplegizm.gameutils.AnimatedSprite;
+import com.scripplegizm.gameutils.AnimatedSprite.AnimMode;
+import com.scripplegizm.gameutils.AnimatedSprite.NextAnim;
+import com.scripplegizm.gameutils.ClickableRect;
 import com.scripplegizm.gameutils.GameView;
+import com.scripplegizm.gameutils.Histogram;
 import com.scripplegizm.qbutils.Draw.Point2D;
 
 public class AnimationGameView extends GameView {

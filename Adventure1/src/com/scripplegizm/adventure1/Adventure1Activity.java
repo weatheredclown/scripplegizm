@@ -14,10 +14,12 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+import com.scripplegizm.gameutils.AnimatedSprite;
+import com.scripplegizm.gameutils.AnimatedSprite.AnimMode;
+import com.scripplegizm.gameutils.Clickables.BitmapButton;
 import com.scripplegizm.gameutils.GameActivity;
 import com.scripplegizm.gameutils.GameView;
-import com.scripplegizm.gameutils.GameView.ClickableMode;
-import com.scripplegizm.gameutils.GameView.GameState;
+import com.scripplegizm.gameutils.Histogram;
 import com.scripplegizm.qbutils.Draw.Point2D;
 
 public class Adventure1Activity extends GameActivity {
@@ -104,7 +106,7 @@ public class Adventure1Activity extends GameActivity {
 			}
 
 			boolean shouldAddFive = false;
-			
+
 			BitmapButton addFive = new BitmapButton(
 					decodeBitmap(R.drawable.boxred), 50, 50,
 					ClickableMode.SINGLE_CLICK, GameState.RUNNING) {
@@ -135,42 +137,46 @@ public class Adventure1Activity extends GameActivity {
 
 			float avgFps = 30.0f;
 			boolean drawFps = false;
-			
+
 			Bitmap sunset = decodeBitmap(R.drawable.sunset4);
 			Bitmap heart = decodeBitmap(R.drawable.heart);
 			float test2 = 0;
-			
+
 			@Override
 			public void newGame() {
 				test2 = 0;
 				girl.pos.setX(-15);
 			}
-			
+
 			@Override
 			public void drawGame(Canvas canvas) {
 				this.blank(canvas, Color.BLACK);
 				float scale = yMax / sunset.getHeight();
 
 				Rect src = new Rect(0, 0, sunset.getWidth(), sunset.getHeight());
-				Rect dest = new Rect((int) test2, 0,(int) test2 + (int) (sunset.getWidth() * scale), (int) (sunset.getHeight() * scale));
-				if (test2 > -xMax*2) {
+				Rect dest = new Rect((int) test2, 0, (int) test2
+						+ (int) (sunset.getWidth() * scale),
+						(int) (sunset.getHeight() * scale));
+				if (test2 > -xMax * 2) {
 					test2 -= SPEED * delta;
 				}
-				boy.pos.setX(test2 + xMax*2 + 300);
+				boy.pos.setX(test2 + xMax * 2 + 300);
 
 				canvas.drawBitmap(sunset, src, dest, draw.getPaint());
-				
+
 				for (Character character : characters) {
 					character.draw(canvas);
 				}
-				
+
 				if (drawHeart) {
 					canvas.drawBitmap(heart, 220, 350, null);
-					this.drawText(canvas, "HAPPY 10th ANNIVERSARY!", 25, yMax - 25);
+					this.drawText(canvas, "HAPPY 10th ANNIVERSARY!", 25,
+							yMax - 25);
 				}
-				
-				// this.drawText(canvas, "girl: " + girl.pos.getX() + ", " + girl.pos.getY(), 25, yMax - 25);
-				
+
+				// this.drawText(canvas, "girl: " + girl.pos.getX() + ", " +
+				// girl.pos.getY(), 25, yMax - 25);
+
 				if (drawFps) {
 					fps.updateValue((int) (delta * 400));
 					fps.pos.set(25, yMax - 50);
@@ -232,18 +238,19 @@ public class Adventure1Activity extends GameActivity {
 					character.update();
 				}
 
-				if (girl.pos.getX() < 184 && !girl.input.directions.contains(Direction.RIGHT)) {
+				if (girl.pos.getX() < 184
+						&& !girl.input.directions.contains(Direction.RIGHT)) {
 					girl.input.directions.add(Direction.RIGHT);
 				} else if (heartCountdown == 0 && !drawHeart) {
 					girl.input.directions.remove(Direction.RIGHT);
-					if (test2 > -xMax*2) {
+					if (test2 > -xMax * 2) {
 						girl.sprite.Update(delta);
 					} else {
 						girl.sprite.setFrame(1);
 						heartCountdown = 90;
 					}
 				}
-				
+
 				if (heartCountdown > 0) {
 					heartCountdown--;
 					if (heartCountdown <= 0) {
@@ -254,16 +261,15 @@ public class Adventure1Activity extends GameActivity {
 
 			int heartCountdown = 0;
 			boolean drawHeart = false;
-			
+
 			@Override
 			public void initGame() {
 				/*
-				buttonManager.addButton(addFive);
-				buttonManager.addButton(left);
-				buttonManager.addButton(right);
-				buttonManager.addButton(up);
-				buttonManager.addButton(down);
-				*/
+				 * buttonManager.addButton(addFive);
+				 * buttonManager.addButton(left);
+				 * buttonManager.addButton(right); buttonManager.addButton(up);
+				 * buttonManager.addButton(down);
+				 */
 				this.setGameState(GameState.RUNNING);
 
 				addFiveGuys();
@@ -280,15 +286,12 @@ public class Adventure1Activity extends GameActivity {
 
 			private void addFiveGuys() {
 				/*
-				for (int i = 0; i < 5; i++) {
-					Character c = new Character(R.drawable.boy);
-					c.sprite.setScale(2.0f);
-					c.pos.set(rand.nextInt(xMax), rand.nextInt(yMax));
-					characters.add(c);
-					RandomInput input = new RandomInput(c);
-					inputs.add(input);
-				}
-				*/
+				 * for (int i = 0; i < 5; i++) { Character c = new
+				 * Character(R.drawable.boy); c.sprite.setScale(2.0f);
+				 * c.pos.set(rand.nextInt(xMax), rand.nextInt(yMax));
+				 * characters.add(c); RandomInput input = new RandomInput(c);
+				 * inputs.add(input); }
+				 */
 			}
 
 			@Override
@@ -313,7 +316,7 @@ public class Adventure1Activity extends GameActivity {
 		inflater.inflate(R.menu.main, menu);
 		return true;
 	}
-	
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// Handle item selection

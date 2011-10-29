@@ -12,6 +12,8 @@ import android.graphics.Color;
 import android.graphics.Rect;
 import android.view.KeyEvent;
 
+import com.scripplegizm.gameutils.Clickables.BitmapButton;
+import com.scripplegizm.gameutils.Clickables.Dialog;
 import com.scripplegizm.gameutils.GameView;
 import com.scripplegizm.qbutils.Draw;
 import com.scripplegizm.qbutils.Draw.Point2D;
