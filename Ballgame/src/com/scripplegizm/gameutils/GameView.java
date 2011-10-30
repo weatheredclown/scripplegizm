@@ -59,8 +59,7 @@ public abstract class GameView extends SurfaceView implements
 	}
 
 	public void blank(Canvas canvas, int black) {
-		draw.getPaint().setColor(black);
-		canvas.drawRect(0, 0, xMax + 1, yMax + 1, draw.getPaint());
+		canvas.drawColor(black);
 	}
 
 	public void drawText(Canvas canvas, String string, int x, int y) {
