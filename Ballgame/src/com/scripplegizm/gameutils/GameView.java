@@ -15,8 +15,6 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
-import com.scripplegizm.qbutils.Draw;
-
 public abstract class GameView extends SurfaceView implements
 		SurfaceHolder.Callback {
 
