@@ -1,5 +1,7 @@
 package com.scripplegizm.gameutils;
 
+import android.graphics.Matrix;
+
 public class Point2D {
 	private float xFloat;
 	private float yFloat;
@@ -98,5 +100,25 @@ public class Point2D {
 	public void set(Point2D point) {
 		setX(point.getX());
 		setY(point.getY());
+	}
+
+	public float mag() {
+		return (float) Math.sqrt(xFloat*xFloat + yFloat*yFloat);
+	}
+
+	public void mult(float f) {
+		setX(f * xFloat);
+		setY(f * yFloat);
+	}
+
+	public void transformBy(Matrix matrix) {
+		float [] pt = { xFloat, yFloat };
+		matrix.mapVectors(pt);
+		set(pt[0], pt[1]);
+	}
+
+	public void add(int i, int j) {
+		setX(i + x);
+		setY(j + y);
 	}
 }
