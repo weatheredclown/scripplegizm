@@ -2,6 +2,7 @@ package com.scripplegizm.gameutils;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.Window;
 
 public abstract class GameActivity extends Activity {
@@ -24,5 +25,13 @@ public abstract class GameActivity extends Activity {
 	protected void onStop() {
 		super.onStop();
 		gameView.saveGame(this);
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		if (!gameView.onOptionsItemSelected(item.getItemId())) {
+			return super.onOptionsItemSelected(item);
+		}
+		return true;
 	}
 }

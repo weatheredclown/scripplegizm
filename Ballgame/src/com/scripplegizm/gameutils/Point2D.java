@@ -58,6 +58,10 @@ public class Point2D {
 		set(x2, y2);
 	}
 
+	public Point2D(Point2D pt) {
+		set(pt);
+	}
+
 	public int dist2(Point2D p) {
 		return (p.x-x) * (p.x-x) + (p.y-y) * (p.y-y);
 	}

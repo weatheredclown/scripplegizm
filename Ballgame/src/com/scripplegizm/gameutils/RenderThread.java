@@ -20,7 +20,7 @@ class RenderThread extends Thread {
 	Exception eTest;
 
 	@Override
-	public void run() {
+	public void run()  {
 		Canvas c;
 		while (run) {
 			c = null;
@@ -29,6 +29,8 @@ class RenderThread extends Thread {
 				synchronized (surfaceHolder) {
 					view.onDraw(c);
 				}
+			} catch(Exception e) {
+				e.printStackTrace();
 			} finally {
 				// do this in a finally so that if an exception is thrown
 				// during the above, we don't leave the Surface in an

@@ -23,11 +23,24 @@ public abstract class GameView extends SurfaceView implements
 	}
 
 	public enum Direction {
-		NONE, LEFT, RIGHT, UP, DOWN
+		NONE, LEFT, RIGHT, UP, DOWN, FIRE
 	}
 
 	public enum ClickableMode {
 		SINGLE_CLICK, HOLDABLE
+	}
+
+	static public class ExtraMath {
+		public static <T extends Number & Comparable<T>> T clamp(T min,
+				T value, T max) {
+			if (min.compareTo(value) > 0) {
+				return min;
+			}
+			if (max.compareTo(value) < 0) {
+				return max;
+			}
+			return value;
+		}
 	}
 
 	protected ButtonManager buttonManager = new ButtonManager();
@@ -35,9 +48,9 @@ public abstract class GameView extends SurfaceView implements
 	protected long currentTime;
 	protected SoundManager soundManager = new SoundManager();
 	protected RenderThread thread;
-	protected int xMax;
-	protected int yMax;
-	protected Random rand = new Random();
+	public static int xMax;
+	public static int yMax;
+	public static Random rand = new Random();
 	private long lastUpdateTime;
 	boolean gameInitialized = false;
 
@@ -110,6 +123,28 @@ public abstract class GameView extends SurfaceView implements
 		public int getValue() {
 			return value;
 		}
+
+		public int draw(Canvas canvas, String string, int x, int uiFontY) {
+			return drawUiValue(canvas, String.format(string, getValue()),
+					processValue(), x, uiFontY);
+		}
+
+		private int drawUiValue(Canvas canvas, String string,
+				float processValue, int x, int uiFontY) {
+			float textSize = 16.0f + 5.0f * processValue;
+			draw.getPaint().setTextSize(textSize);
+
+			float pct = 1.0f - (processValue * 0.5f);
+			int colorRange = Color.WHITE - Color.MAGENTA;
+			int textColor = Color.MAGENTA + (int) (colorRange * pct);
+			draw.getPaint().setColor(Color.BLACK);
+			canvas.drawText(string, x + 1, uiFontY + 1, draw.getPaint());
+
+			draw.getPaint().setColor(textColor);
+			canvas.drawText(string, x, uiFontY, draw.getPaint());
+			draw.getPaint().setTextSize(16.0f);
+			return (int) textSize + 2;
+		}
 	}
 
 	public void updateDelta() {
@@ -169,18 +204,19 @@ public abstract class GameView extends SurfaceView implements
 	@Override
 	public void onSizeChanged(int w, int h, int oldW, int oldH) {
 		// Set the movement bounds for the ball
-		this.xMax = w - 1;
-		this.yMax = h - 1;
+		xMax = w - 1;
+		yMax = h - 1;
+		if (!gameInitialized) {
+			// Just moved this from onDraw to here..
+			// Is there a threading reason for it to be onDraw?
+			gameInitialized = true;
+			initGame();
+		}
 		this.reinitGame();
 	}
 
 	@Override
 	protected void onDraw(Canvas canvas) {
-		if (!gameInitialized) {
-			gameInitialized = true;
-			initGame();
-		}
-
 		// Update the position of the ball, including collision detection and
 		// reaction.
 		buttonManager.updateButtons();
@@ -194,6 +230,9 @@ public abstract class GameView extends SurfaceView implements
 
 	public abstract void updateGame();
 
+	/**
+	 * This function is called when the screen is resized.
+	 */
 	public abstract void reinitGame();
 
 	public void initGame() {
@@ -236,4 +275,7 @@ public abstract class GameView extends SurfaceView implements
 		loadGame(settings);
 	}
 
+	public boolean onOptionsItemSelected(int itemId) {
+		return false;
+	}
 }
