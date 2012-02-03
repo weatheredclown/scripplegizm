@@ -11,14 +11,14 @@ public class Point2D {
 	public Point2D(int x, int y) {
 		set(x, y);
 	}
-	
+
 	public void set(int x, int y) {
 		this.x = x;
 		this.y = y;
 		xFloat = (float) x;
 		yFloat = (float) y;
 	}
-	
+
 	public void set(float x, float y) {
 		xFloat = x;
 		yFloat = y;
@@ -30,26 +30,26 @@ public class Point2D {
 		this.x = x;
 		xFloat = (float) x;
 	}
-	
+
 	public void setY(int y) {
 		this.y = y;
 		yFloat = (float) y;
 	}
-	
+
 	public void setX(float x) {
 		xFloat = x;
 		this.x = (int) x;
 	}
-	
+
 	public void setY(float y) {
 		yFloat = y;
 		this.y = (int) y;
 	}
-	
+
 	public void addX(float x) {
 		setX(xFloat + x);
 	}
-	
+
 	public void addY(float y) {
 		setY(yFloat + y);
 	}
@@ -62,8 +62,13 @@ public class Point2D {
 		set(pt);
 	}
 
+	public float dist2Float(Point2D p) {
+		return (p.xFloat - xFloat) * (p.xFloat - xFloat) + (p.yFloat - yFloat)
+				* (p.yFloat - yFloat);
+	}
+
 	public int dist2(Point2D p) {
-		return (p.x-x) * (p.x-x) + (p.y-y) * (p.y-y);
+		return (p.x - x) * (p.x - x) + (p.y - y) * (p.y - y);
 	}
 
 	public void add(Point2D p) {
@@ -71,7 +76,7 @@ public class Point2D {
 	}
 
 	public int mag2() {
-		return x*x + y*y;
+		return x * x + y * y;
 	}
 
 	public static Point2D add(Point2D a, Point2D b) {
@@ -83,15 +88,15 @@ public class Point2D {
 	public int getX() {
 		return x;
 	}
-	
+
 	public float getXFloat() {
 		return xFloat;
 	}
-	
+
 	public int getY() {
 		return y;
 	}
-	
+
 	public float getYFloat() {
 		return yFloat;
 	}
@@ -107,7 +112,7 @@ public class Point2D {
 	}
 
 	public float mag() {
-		return (float) Math.sqrt(xFloat*xFloat + yFloat*yFloat);
+		return (float) Math.sqrt(xFloat * xFloat + yFloat * yFloat);
 	}
 
 	public void mult(float f) {
@@ -116,7 +121,7 @@ public class Point2D {
 	}
 
 	public void transformBy(Matrix matrix) {
-		float [] pt = { xFloat, yFloat };
+		float[] pt = { xFloat, yFloat };
 		matrix.mapVectors(pt);
 		set(pt[0], pt[1]);
 	}
@@ -124,5 +129,21 @@ public class Point2D {
 	public void add(int i, int j) {
 		setX(i + x);
 		setY(j + y);
+	}
+
+	public void normalize() {
+		float m = mag();
+		setX(getXFloat() / m);
+		setY(getYFloat() / m);
+	}
+
+	public void subtract(Point2D a, Point2D b) {
+		setX(a.x - b.x);
+		setY(a.y - b.y);
+	}
+
+	public void subtract(Point2D a) {
+		setX(xFloat -= a.xFloat);
+		setY(yFloat -= a.yFloat);
 	}
 }

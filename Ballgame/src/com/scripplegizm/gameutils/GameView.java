@@ -1,5 +1,7 @@
 package com.scripplegizm.gameutils;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Random;
 
 import android.app.Activity;
@@ -10,6 +12,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint.Style;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
@@ -18,8 +21,138 @@ import android.view.SurfaceView;
 public abstract class GameView extends SurfaceView implements
 		SurfaceHolder.Callback {
 
+	public class BirthRule {
+		public int particleCount = 300;
+		public float life = 1.0f; // In Seconds
+		public int emitCountPerSecond = 30; // approx number per second.
+											// should not be less than fps.
+
+		public int emitCountLimit = 300;
+		public int posVarianceX = 0, posVarianceY = 0;
+		public int velVarianceX = 0, velVarianceY = 0;
+		public int baseVelX = 0, baseVelY = 0;
+		public int baseAccelX = 0, baseAccelY = 0;
+		public int accelVarianceX = 0, accelVarianceY = 0;
+
+		public int getStartPosY() {
+			return variance(0, posVarianceX);
+		}
+
+		private int variance(int i, int vary) {
+			return i + (vary > 0 ? rand.nextInt(vary) - (vary / 2) : 0);
+		}
+
+		public int getStartPosX() {
+			// TODO Auto-generated method stub
+			return variance(0, posVarianceY);
+		}
+
+		public int getStartVelY() {
+			return variance(baseVelY, velVarianceY);
+		}
+
+		public int getStartVelX() {
+			return variance(baseVelX, velVarianceX);
+		}
+
+		public int getAccelX() {
+			return variance(baseAccelX, accelVarianceX);
+		}
+
+		public int getAccelY() {
+			return variance(baseAccelY, accelVarianceY);
+		}
+	}
+
+	public class ParticleSystem {
+
+		private BirthRule rule;
+		public Point2D position = new Point2D(0, 0);
+		ArrayList<Particle> active = new ArrayList<Particle>();
+		ArrayList<Particle> inactive = new ArrayList<Particle>();
+		public int totalEmitCount = 0;
+
+		public void stop() {
+			totalEmitCount = rule.emitCountLimit;
+		}
+
+		class Particle {
+			boolean active = true;
+			Point2D position = new Point2D(0, 0);
+			Point2D velocity = new Point2D(0, 0);
+			float life;
+			public Point2D acceleration = new Point2D(0, 0);
+		}
+
+		public ParticleSystem(BirthRule rule) {
+			this.rule = rule;
+			for (int i = 0; i < rule.particleCount; i++) {
+				inactive.add(new Particle());
+			}
+			stop();
+		}
+
+		void emit() {
+			if (totalEmitCount < rule.emitCountLimit && inactive.size() > 0) {
+				totalEmitCount++;
+				Particle particle = inactive.remove(0);
+				particle.life = rule.life;
+				particle.position.set(rule.getStartPosX(), rule.getStartPosY());
+				particle.velocity.set(rule.getStartVelX(), rule.getStartVelY());
+				particle.acceleration.set(rule.getAccelX(), rule.getAccelY());
+				active.add(particle);
+			}
+		}
+
+		public void update() {
+			int emitCount = (int) (delta * rule.emitCountPerSecond);
+			for (int i = 0; i < emitCount; i++) {
+				emit();
+			}
+			Iterator<Particle> it = active.iterator();
+			Point2D vel = new Point2D(0, 0);
+			Point2D accel = new Point2D(0, 0);
+			while (it.hasNext()) {
+				Particle particle = it.next();
+				particle.life -= delta;
+				vel.set(particle.velocity);
+				vel.mult(delta);
+				particle.position.add(vel);
+				accel.set(particle.acceleration);
+				accel.mult(delta);
+				particle.velocity.add(accel);
+				if (particle.life <= 0.0f) {
+					it.remove();
+					inactive.add(particle);
+				}
+			}
+		}
+
+		public int offsetX = 0;
+		int offsetY = 0;
+
+		public void draw(Canvas canvas) {
+			if (active.size() > 0) {
+				draw.getPaint().setStyle(Style.FILL_AND_STROKE);
+				draw.getPaint().setColor(Color.WHITE);
+				for (Particle particle : active) {
+					canvas.drawCircle(
+							position.getX() + particle.position.getX()
+									- offsetX, particle.position.getY()
+									+ position.getY() - offsetY, 5,
+							draw.getPaint());
+				}
+			}
+		}
+
+		public void start(int x, int y) {
+			totalEmitCount = 0;
+			position.set(x, y);
+		}
+	}
+
 	public enum GameState {
-		PAUSED, RUNNING,
+		PAUSED, RUNNING, CUTSCENE
 	}
 
 	public enum Direction {
@@ -53,6 +186,7 @@ public abstract class GameView extends SurfaceView implements
 	public static Random rand = new Random();
 	private long lastUpdateTime;
 	boolean gameInitialized = false;
+	public GameActivity activity;
 
 	public static Draw draw = new Draw();
 	private static GameState gameState = GameState.PAUSED;
@@ -159,6 +293,10 @@ public abstract class GameView extends SurfaceView implements
 	}
 
 	public void surfaceCreated(SurfaceHolder holder) {
+		if (thread == null) {
+			thread = new RenderThread(getHolder(), this);
+		}
+
 		thread.setRunning(true);
 		thread.start();
 	}
@@ -172,6 +310,7 @@ public abstract class GameView extends SurfaceView implements
 		while (retry) {
 			try {
 				thread.join();
+				thread = null;
 				retry = false;
 			} catch (InterruptedException e) {
 				// we will try it again and again...

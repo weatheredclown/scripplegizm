@@ -9,6 +9,10 @@ import android.view.MotionEvent;
 public class ButtonManager {
 	List<ClickableRect> buttons = new ArrayList<ClickableRect>();
 
+	public List<ClickableRect> getButtons() {
+		return buttons;
+	}
+
 	public void addButton(ClickableRect button) {
 		buttons.add(button);
 	}

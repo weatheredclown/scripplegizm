@@ -5,6 +5,7 @@ import java.util.HashMap;
 import android.content.Context;
 import android.media.AudioManager;
 import android.media.SoundPool;
+import android.util.Log;
 
 public class SoundManager {
 	private SoundPool mSoundPool;
@@ -44,7 +45,8 @@ public class SoundManager {
 				streamVolume, 1, -1, 1f);
 	}
 
-	public void addSound(int index, int SoundID) {
-		mSoundPoolMap.put(index, mSoundPool.load(mContext, SoundID, 1));
+	public void addSound(int index, int soundID) {
+		Log.i("SOUND", "added " + index + ": " + soundID);
+		mSoundPoolMap.put(index, mSoundPool.load(mContext, soundID, 1));
 	}
 }

@@ -50,6 +50,10 @@ public abstract class ClickableRect {
 		return preferredState;
 	}
 
+	public void setVisible(boolean v) {
+		visible = v;
+	}
+	
 	public boolean visible = false;
 	public String caption = "";
 	public int yTextOffset = 35;
