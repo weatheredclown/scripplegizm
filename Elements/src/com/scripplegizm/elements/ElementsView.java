@@ -460,6 +460,7 @@ class ElementsView extends GameView {
 		createScenarios();
 	}
 
+	@Override
 	public boolean onOptionsItemSelected(int itemId) {
 		if (itemId == R.id.delete) {
 			deleteRequested = true;
