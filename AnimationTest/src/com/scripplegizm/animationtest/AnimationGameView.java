@@ -473,6 +473,7 @@ public class AnimationGameView extends GameView {
 		 */
 	}
 
+	@Override
 	public void saveGame(Editor editor) {
 		editor.putInt("roomcount", rooms.size());
 		int i = 0;
