@@ -9,7 +9,6 @@ public class SpriteTestActivity extends GameActivity {
 
 	@Override
 	public GameView createGameView() {
-		// TODO Auto-generated method stub
 	    gv = new SpriteGameView(this);
 	    return gv;
 	}

@@ -178,8 +178,9 @@ public class SpriteGameView extends GameView {
 	Guy player = new Guy(true);
 	Guy enemy = new Guy(false);
 
-	BitmapButton jumpButton = new BitmapButton(jumpBtnBitmap, 0, 0, ClickableMode.SINGLE_CLICK,
-			GameState.RUNNING, KeyEvent.KEYCODE_DPAD_UP) {
+	BitmapButton jumpButton = new BitmapButton(jumpBtnBitmap, 0, 0,
+			ClickableMode.SINGLE_CLICK, GameState.RUNNING,
+			KeyEvent.KEYCODE_DPAD_UP) {
 		@Override
 		public void click() {
 			player.jump = true;
@@ -187,8 +188,9 @@ public class SpriteGameView extends GameView {
 		}
 	};
 
-	BitmapButton leftButton = new BitmapButton(leftBtnBitmap, 120, 0, ClickableMode.HOLDABLE,
-			GameState.RUNNING, KeyEvent.KEYCODE_DPAD_LEFT) {
+	BitmapButton leftButton = new BitmapButton(leftBtnBitmap, 120, 0,
+			ClickableMode.HOLDABLE, GameState.RUNNING,
+			KeyEvent.KEYCODE_DPAD_LEFT) {
 
 		@Override
 		public void click() {
@@ -200,8 +202,9 @@ public class SpriteGameView extends GameView {
 
 	};
 
-	BitmapButton rightButton = new BitmapButton(rightBtnBitmap, 240, 0, ClickableMode.HOLDABLE,
-			GameState.RUNNING, KeyEvent.KEYCODE_DPAD_RIGHT) {
+	BitmapButton rightButton = new BitmapButton(rightBtnBitmap, 240, 0,
+			ClickableMode.HOLDABLE, GameState.RUNNING,
+			KeyEvent.KEYCODE_DPAD_RIGHT) {
 
 		@Override
 		public void click() {
@@ -364,16 +367,13 @@ public class SpriteGameView extends GameView {
 		player.draw(canvas);
 
 		draw.getPaint().setColor(Color.BLACK);
-		this.startUiDraw();
-		this.drawUiValue(canvas, "Score: ", gameScore);
-		drawUiValue(canvas,
-				"Multi: " + Integer.toString(gameBonusMulti.getValue()) + "x",
-				gameBonusMulti.processValue());
-		drawUiValue(canvas, "Lives: ", gameLives);
-		drawUiValue(canvas, "High: ", gameHiScore);
-
+		int uiFontY = 30;
+		uiFontY += gameScore.draw(canvas, "Score: %d", 100, uiFontY);
+		uiFontY += gameBonusMulti.draw(canvas, "Multi: %d", 100, uiFontY);
+		uiFontY += gameLives.draw(canvas, "Lives: %d", 100, uiFontY);
+		uiFontY += gameHiScore.draw(canvas, "High: %d", 100, uiFontY);
 		// debugDraw(canvas);
-		
+
 		int boxDrawPos = boxes.get(BOX_CUR_SCREEN).boxPos.getX() - pos;
 		if (boxDrawPos + BOX_WIDTH > 0 || boxDrawPos < xMax) {
 			draw.getPaint().setColor(boxes.get(BOX_CUR_SCREEN).boxColor);
@@ -387,10 +387,10 @@ public class SpriteGameView extends GameView {
 		if (getGameState() != GameState.RUNNING && dialog == null) {
 			dialog = new Dialog(xMax / 2, yMax / 2, 200, 30, "Start",
 					Color.RED, Color.WHITE) {
-						@Override
-						public void click() {
-							startGame();
-						}
+				@Override
+				public void click() {
+					startGame();
+				}
 			};
 			buttonManager.addButton(dialog);
 		}
@@ -432,32 +432,6 @@ public class SpriteGameView extends GameView {
 			int offset) {
 		int width = (int) (bitmap.getWidth() * f);
 		drawLayer(canvas, bitmap, width, y, offset);
-	}
-
-	private void drawUiValue(Canvas canvas, String string, TrackedValue tv) {
-		drawUiValue(canvas, string + tv.getValue(), tv.processValue());
-	}
-
-	private void drawUiValue(Canvas canvas, String string, float processValue) {
-		float textSize = 16.0f + 5.0f * processValue;
-		draw.getPaint().setTextSize(textSize);
-
-		float pct = 1.0f - (processValue * 0.5f);
-		int colorRange = Color.WHITE - Color.MAGENTA;
-		int textColor = Color.MAGENTA + (int) (colorRange * pct);
-		draw.getPaint().setColor(Color.BLACK);
-		canvas.drawText(string, 101, uiFontY + 1, draw.getPaint());
-
-		draw.getPaint().setColor(textColor);
-		canvas.drawText(string, 100, uiFontY, draw.getPaint());
-		draw.getPaint().setTextSize(16.0f);
-		uiFontY += (int) textSize + 2;
-	}
-
-	int uiFontY = 30;
-
-	private void startUiDraw() {
-		uiFontY = 30;
 	}
 
 	private void drawLayer(Canvas canvas, Bitmap bitmap, int xInterval, int y,
